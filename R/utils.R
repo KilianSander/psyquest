@@ -58,14 +58,16 @@ get_subscales <- function(questionnaire_id){
 #' @param language (character)  language of item texts
 #'
 #' @export
-get_item_info <- function(questionnaire_id, subscales, language = "en"){
+get_item_info <- function(questionnaire_id,
+                          subscales = c(),
+                          language = "en"){
   items <- get_items(questionnaire_id, subscales) %>%
     mutate(polarity = c("positive", "negative")[1 + stringr::str_detect(score_func, "-x|-\\(x")],
            prompt_id = stringr::str_extract(prompt_id, "[0-9]+$"),
            num_options = stringr::str_extract(option_type, "^[0-9]+")) %>%
     select(q_id, item_id, prompt_id, polarity, subscales, num_options)
   #browser()
-  prompts <- psyquest::psyquest_dict %>%
+  prompts <- psyquest::psyquest_dict_df %>%
     as.data.frame() %>%
     filter(stringr::str_detect(key, questionnaire_id)) %>%
     filter((key %in% sprintf("T%s_%s_PROMPT", questionnaire_id, items$prompt_id))) %>%
@@ -88,7 +90,7 @@ get_item_choices <- function(questionnaire_id, item_id, language = "en"){
     filter(stringr::str_detect(key, sstr))
   if(length(language) == 1){
     if(nrow(choices) > 0){
-      choices %>% pull(!!sym(language))
+      choices %>% pull(!!dplyr::sym(language))
     }
     else{
       character(0)
@@ -96,7 +98,7 @@ get_item_choices <- function(questionnaire_id, item_id, language = "en"){
   }
   else{
     if(nrow(choices) > 0){
-      choices %>% select(key, all_of(language))
+      choices %>% select(key, dplyr::all_of(language))
     }
     else{
       choices
