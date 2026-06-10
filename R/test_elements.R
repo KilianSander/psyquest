@@ -121,12 +121,16 @@ make_ui_month_and_year_select <-
     outer_div <-
       shiny::tags$div(id = id)
 
-    selectboxes <-
-      shiny::tags$div(outer_div,
-                      if(show_month) shiny::selectizeInput("month",  label = psychTestR::i18n("MONTH"), choices = months, multiple = FALSE),
-                      shiny::selectizeInput("year",
-                                            label = psychTestR::i18n("YEAR"),
-                                            choices = years, multiple = FALSE))
+    # if (vertical_layout) {
+      selectboxes <-
+        shiny::tags$div(outer_div,
+                        if(show_month) shiny::selectizeInput("month",  label = psychTestR::i18n("MONTH"), choices = months, multiple = FALSE),
+                        shiny::selectizeInput("year",
+                                              label = psychTestR::i18n("YEAR"),
+                                              choices = years, multiple = FALSE))
+    # } else {
+    #   selectboxes
+    # }
 
     shiny::tags$div(id = "rb", style = "width: 300px",
                     selectboxes,
