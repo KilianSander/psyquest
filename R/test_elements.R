@@ -121,21 +121,76 @@ make_ui_month_and_year_select <-
     outer_div <-
       shiny::tags$div(id = id)
 
-    # if (vertical_layout) {
-      selectboxes <-
-        shiny::tags$div(outer_div,
-                        if(show_month) shiny::selectizeInput("month",  label = psychTestR::i18n("MONTH"), choices = months, multiple = FALSE),
-                        shiny::selectizeInput("year",
-                                              label = psychTestR::i18n("YEAR"),
-                                              choices = years, multiple = FALSE))
-    # } else {
-    #   selectboxes
-    # }
+    selectboxes <-
+      shiny::tags$div(outer_div,
+                      if(show_month) shiny::selectizeInput("month",  label = psychTestR::i18n("MONTH"), choices = months, multiple = FALSE),
+                      shiny::selectizeInput("year",
+                                            label = psychTestR::i18n("YEAR"),
+                                            choices = years, multiple = FALSE))
 
     shiny::tags$div(id = "rb", style = "width: 300px",
                     selectboxes,
                     psychTestR::trigger_button("next", psychTestR::i18n("CONTINUE")))
   }
+
+#' Make year and month selectboxes
+#'
+#' Creates html code for year and month selectboxes.
+#'
+#' @param id HTML ID for the div containing the selectboxes.
+#'
+#' @param min_year minimum year to display in the year selectbox.
+#'
+#' @param max_year maximum year to display in the year selectbox.
+#'
+#' @param show_month (flag) whether or not to display the selectbox for month.
+#'
+make_ui_year_and_month_select <- function(id = "response_ui",
+                                          min_year = 1930,
+                                          max_year = 2013,
+                                          show_month = TRUE) {
+  stopifnot(
+    is.scalar.character(id),
+    max_year >= min_year,
+    is.scalar.logical(show_month)
+  )
+
+  months <- c("SELECT_MONTH", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER")
+  month_numbers <- c(NA, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+  months <- setNames(month_numbers, map(months, psychTestR::i18n))
+  years <- c(psychTestR::i18n("SELECT_YEAR"), rev(c(min_year:max_year)))
+  years_numbers <- c(NA, rev(c(min_year:max_year)))
+  years <- setNames(years_numbers, years)
+
+  outer_div <-
+    shiny::tags$div(id = id)
+
+  selectboxes <-
+    shiny::tags$div(
+      outer_div,
+      shiny::selectizeInput(
+        "year",
+        label = psychTestR::i18n("YEAR"),
+        choices = years,
+        multiple = FALSE
+      ),
+      if (show_month) {
+        shiny::selectizeInput(
+          "month",
+          label = psychTestR::i18n("MONTH"),
+          choices = months,
+          multiple = FALSE
+        )
+      }
+    )
+
+  shiny::tags$div(
+    id = "rb",
+    style = "width: 300px",
+    selectboxes,
+    psychTestR::trigger_button("next", psychTestR::i18n("CONTINUE"))
+  )
+}
 
 #' Labelled text input page
 #'
