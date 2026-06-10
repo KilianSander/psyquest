@@ -33,10 +33,14 @@
 #'
 #' @param admin_ui Optional UI component for the admin panel.
 #'
+#' @param year_second (scalar logical) whether to display the month selectbox
+#' first and the year selectbox second (\code{TRUE}, default) or vice versa.
+#'
 #' @export
 month_and_year_select_page <-
   function(label,
            prompt,
+           year_second = TRUE,
            save_answer = TRUE,
            min_year = 1930,
            max_year = 2013,
@@ -50,17 +54,30 @@ month_and_year_select_page <-
     stopifnot(
       is.scalar.character(label)
     )
-    ui <- shiny::div(
-      tagify(prompt),
-      make_ui_month_and_year_select(
-        label,
-        hide = hide_response_ui,
-        id = response_ui_id,
-        min_year = min_year,
-        max_year = max_year,
-        show_month = show_month
+    if (year_second) {
+      ui <- shiny::div(
+        tagify(prompt),
+        make_ui_month_and_year_select(
+          label,
+          hide = hide_response_ui,
+          id = response_ui_id,
+          min_year = min_year,
+          max_year = max_year,
+          show_month = show_month
+        )
       )
-    )
+    } else {
+      ui <- shiny::div(
+        tagify(prompt),
+        make_ui_year_and_month_select(
+          id = response_ui_id,
+          min_year = min_year,
+          max_year = max_year,
+          show_month = show_month
+        )
+      )
+    }
+
     get_answer <- function(input, ...) {
       c(input$month, input$year)
     }

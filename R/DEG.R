@@ -60,6 +60,10 @@ DEG <- function(label = "DEG",
   if("show_month" %in% names(dots)){
     show_month <- dots$show_month
   }
+  year_second <- TRUE
+  if("year_second" %in% names(dots)){
+    year_second <- dots$year_second
+  }
   main_test_deg(
     questionnaire_id = questionnaire_id,
     label = label,
@@ -67,6 +71,7 @@ DEG <- function(label = "DEG",
                       subscales = subscales),
     min_year = year_range[1],
     max_year = year_range[2],
+    year_second = year_second,
     subscales = subscales,
     language = language,
     offset = 1,
@@ -84,6 +89,7 @@ main_test_deg <- function(questionnaire_id,
                           subscales,
                           language,
                           min_year = 1930, max_year = 2013,
+                          year_second = TRUE,
                           offset = 1,
                           arrange_vertically = TRUE,
                           nationalities = NULL, formative_countries = NULL, residence_countries = NULL,
@@ -231,6 +237,7 @@ main_test_deg <- function(questionnaire_id,
                 psychTestR::i18n("TDEG_0010_PROMPT"),
                 min_year = min_year,
                 max_year = max_year,
+                year_second = year_second,
                 show_month = show_month)
       ),
       dict = dict
