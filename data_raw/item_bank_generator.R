@@ -5,7 +5,7 @@ psyquest_item_bank_raw <-
      if(grepl("BTQ", filepath)){
       #browser()
      }
-
+    messagef("Reading %s", basename(filepath))
     read.csv(filepath, sep = ";", stringsAsFactors = FALSE, header = TRUE)
   })
 
@@ -19,6 +19,7 @@ psyquest_item_bank <-
   mutate(item_id = 1:n()) %>%
   ungroup() %>%
   select(q_id, item_id, prompt_id = main_id, option_type = template, score_func, subscales, layout, audio_file, short_version)
+
 
 #hack for DEG
 psyquest_item_bank[psyquest_item_bank$q_id == "DEG" & psyquest_item_bank$item_id >= 6 & psyquest_item_bank$item_id <= 12,]$item_id <- psyquest_item_bank[psyquest_item_bank$q_id == "DEG" & psyquest_item_bank$item_id >= 6 & psyquest_item_bank$item_id <= 12,]$item_id - 1

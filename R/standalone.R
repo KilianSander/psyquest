@@ -1,7 +1,7 @@
 #' Standalone
 #'
 #' This function launches a standalone testing session for a questionnaire with the specified label.
-#' Valid labels are 'BMR', 'BFT'. 'CBQ', CCM', 'DAC', 'DEG', 'GDS', 'GMS', 'GRT', 'HOP', 'HUM', 'HSP', 'IBQ', MES', 'MES', 'MHE', 'MHI', 'MHP', 'PAC', 'PMS', 'LON'
+#' Valid labels are 'BMR', 'BFT'. 'BFC', CBQ', CCM', 'DAC', 'DEG', 'GDS', 'GMS', 'GRT', 'HOP', 'HUM', 'HSP', 'IBQ', MES', 'MES', 'MHE', 'MHI', 'MHP', 'PAC', 'PMS', 'LON'
 #' 'SDQ', 'SEM', 'SES','SMP', 'SOS', 'SWL', TOI', 'TOM', and 'TPI'.
 #' This can be used for data collection, either in the laboratory or online.
 #'
@@ -47,6 +47,7 @@ standalone <- function(label,
                        with_id = FALSE,
                        validate_id = "auto",
                        randomize = FALSE,
+                       alt_intro = NULL,
                        ...) {
   subscales <- sort(subscales)
   items <-
@@ -71,6 +72,7 @@ standalone <- function(label,
       short_version = short_version,
       configuration_filepath = configuration_filepath,
       randomize = randomize,
+      alt_intro = alt_intro,
       ...
     ),
     # psychTestR::code_block(function(state,...){
@@ -142,6 +144,23 @@ BFT_standalone <-
   function(languages = psyquest::languages(), ...)
     standalone(label = "BFT", languages = languages, ...)
 
+#' BFC Standalone
+#'
+#' This function launches a standalone testing session for the BFC questionnaire.
+#' BFC stands for 'Big Five Inventory 10-items for Parents' (about a child).
+#'
+#' @param languages (Character vector)
+#' Determines the languages available to participants.
+#' Possible languages include \code{"en"} (English), \code{"de"} (German) and \code{"de_d"} (formal German).
+#' The first language is selected by default.
+#'
+#' @param ... Further arguments to be passed to \code{\link{standalone}()}.
+#'
+#' @export
+BFC_standalone <-
+  function(languages = psyquest::languages(), ...)
+    standalone(label = "BFC", languages = languages, ...)
+
 #' BMR Standalone
 #'
 #' This function launches a standalone testing session for the BMR questionnaire.
@@ -159,10 +178,26 @@ BMR_standalone <-
   function(languages = psyquest::languages(), ...)
     standalone(label = "BMR", languages = languages, ...)
 
+#' BRE Standalone
+#'
+#' This function launches a standalone testing session for the BRE questionnaire.
+#' BRE stands for 'BRECVEMA'.
+#'
+#' @param languages (Character vector)
+#' Determines the languages available to participants.
+#' Possible languages include \code{"en"} (English), \code{"de"} (German) and \code{"de_f"} (formal German).
+#' The first language is selected by default.
+#'
+#' @param ... Further arguments to be passed to \code{\link{standalone}()}.
+#'
+BRE_standalone <-
+  function(languages = psyquest::languages(), ...)
+    standalone(label = "BRE", languages = languages, ...)
+
 #' BTQ Standalone
 #'
 #' This function launches a standalone testing session for the BFT questionnaire.
-#' BFT stands for 'Bedtime Questionnaire'.
+#' BTQ stands for 'Bedtime Questionnaire'.
 #'
 #' @param languages (Character vector)
 #' Determines the languages available to participants.
@@ -221,11 +256,29 @@ CCM_standalone <-
 CHD_standalone <-
   function(languages = psyquest::languages(),
            subscales = NULL,
+           alt_intro = F,
            ...)
     standalone(label = "CHD",
                languages = languages,
                subscales = subscales,
+               alt_intro = alt_intro,
                ...)
+#' CMI Standalone
+#'
+#' This function launches a standalone testing session for the CMI questionnaire.
+#' CMI stands for 'Children  Musicality Index'.
+#'
+#' @param languages (Character vector)
+#' Determines the languages available to participants.
+#' Possible languages include \code{"en"} (English),  \code{"de_f"} (German), and \code{"de"} (German).
+#' The first language is selected by default.
+#'
+#' @param ... Further arguments to be passed to \code{\link{standalone}()}.
+#'
+#' @export
+CMI_standalone <-
+  function(languages = psyquest::languages(), ...)
+    standalone(label = "CMI", languages = languages, ...)
 
 #' CMS Standalone
 #'
@@ -241,8 +294,8 @@ CHD_standalone <-
 #'
 #' @export
 CMS_standalone <-
-  function(languages = psyquest::languages(), ...)
-    standalone(label = "CMS", languages = languages, ...)
+  function(subscales = NULL, languages = psyquest::languages(), alt_intro = NULL, ...)
+    standalone(label = "CMS", languages = languages, subscales = subscales, alt_intro = alt_intro,...)
 
 
 #' CMT Standalone
@@ -577,6 +630,35 @@ IMI_standalone <-
                languages = languages,
                subscales = subscales,
                ...)
+
+#' ISM Standalone
+#'
+#' This function launches a standalone testing session for the ISM questionnaire.
+#' ISM stands for 'individual and social music listening scale.'
+#'
+#' @param languages (Character vector)
+#' Determines the languages available to participants.
+#' Possible languages include \code{"en"} (English), and \code{"de"} (German).
+#' The first language is selected by default.
+#'
+#' @param subscales (Character vector) The subscales to be included in the questionnaire.
+#' Possible subscales are \code{"Individual"}, and \code{"Social"}.
+#' If no subscales are provided all subscales for the questionnaire are selected.
+#'
+#' @param ... Further arguments to be passed to \code{\link{standalone}()}.
+#'
+#' @export
+ISM_standalone <-
+  function(languages = psyquest::languages(),
+           subscales = NULL,
+           short_version = F,
+           ...)
+    standalone(label = "ISM",
+               languages = languages,
+               subscales = subscales,
+               short_version = short_version,
+               ...)
+
 #' JIC Standalone
 #'
 #' This function launches a standalone testing session for the JIC questionnaire.
@@ -908,6 +990,22 @@ QHC_standalone <-
   function(languages = psyquest::languages(), ...)
     standalone(label = "QHC", languages = languages, ...)
 
+
+#' SAQ Standalone
+#'
+#' This function launches a standalone testing session for the SAQ questionnaire.
+#' SAQ stands for 'Spreading Activation Questionnaire'.
+#'
+#' @param languages (Character vector)
+#' Determines the languages available to participants.
+#' Possible languages include \code{"en"} (English), and \code{"de"} (German).
+#' The first language is selected by default.
+#'
+#' @param ... Further arguments to be passed to \code{\link{standalone}()}.
+#'
+SAQ_standalone <-
+  function(languages = psyquest::languages(), ...)
+    standalone(label = "SAQ", languages = languages, ...)
 
 #' SCA Standalone
 #'
